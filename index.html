@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mobile Number Input</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 12px;
+      width: 100%;
+      background: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>मोबाइल नंबर दर्ज करें</h2>
+    <input type="tel" id="mobileNumber" maxlength="10" placeholder="10 अंकों का नंबर">
+    <div class="error" id="errorMsg">गलत मोबाइल नंबर</div>
+    <button onclick="detectOperator()">Continue</button>
+  </div>
+
+  <script>
+    function detectOperator() {
+      const num = document.getElementById('mobileNumber').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+
+      if (!/^[6-9][0-9]{9}$/.test(num)) {
+        errorMsg.style.display = 'block';
+        return;
+      }
+      errorMsg.style.display = 'none';
+
+      const prefix = num.substring(0, 4);
+      let operator = 'unknown';
+
+      const jioPrefixes = ['7010', '7982', '7991', '8828', '7993'];
+      const airtelPrefixes = ['9810', '9891', '8800', '9123', '9818'];
+      const viPrefixes = ['9400', '9021', '9762', '9781'];
+      const bsnlPrefixes = ['9410', '9420', '9403'];
+
+      if (jioPrefixes.includes(prefix)) operator = 'jio';
+      else if (airtelPrefixes.includes(prefix)) operator = 'airtel';
+      else if (viPrefixes.includes(prefix)) operator = 'vi';
+      else if (bsnlPrefixes.includes(prefix)) operator = 'bsnl';
+
+      window.location.href = `recharge-plans.html?mobileNumber=${num}&operator=${operator}`;
+    }
+  </script>
+</body>
+</html>

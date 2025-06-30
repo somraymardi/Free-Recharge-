@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recharge Plans</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f7f9fc;
+      padding: 20px;
+      text-align: center;
+    }
+    .plans-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    .plan-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #007bff;
+    }
+    .plan-price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .select-btn {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Recharge Plans</h1>
+  <div id="userInfo"></div>
+  <div class="plans-container" id="plansContainer"></div>
+
+  <script>
+    const url = new URLSearchParams(window.location.search);
+    const mobile = url.get('mobileNumber');
+    const operator = url.get('operator') || 'unknown';
+
+    document.getElementById('userInfo').innerHTML = `Mobile: ${mobile} | Operator: ${operator.toUpperCase()}`;
+
+    const plans = {
+      jio: [
+        { price: 149, validity: "20 दिन", desc: "Jio 1GB/day + JioTV" },
+        { price: 239, validity: "28 दिन", desc: "1.5GB/day + OTT" }
+      ],
+      airtel: [
+        { price: 155, validity: "24 दिन", desc: "1GB/day + Wynk Music" },
+        { price: 265, validity: "28 दिन", desc: "2GB/day + Amazon MiniTV" }
+      ],
+      vi: [
+        { price: 129, validity: "18 दिन", desc: "1GB/day + Vi Movies" },
+        { price: 199, validity: "28 दिन", desc: "1.5GB/day + Weekend Data Rollover" }
+      ],
+      bsnl: [
+        { price: 94, validity: "30 दिन", desc: "3GB Total + 100 SMS" },
+        { price: 199, validity: "60 दिन", desc: "Unlimited calls + 2GB data" }
+      ],
+      unknown: [
+        { price: 99, validity: "28 दिन", desc: "Default Plan 1GB/day" }
+      ]
+    };
+
+    const plansList = plans[operator] || plans['unknown'];
+    const container = document.getElementById('plansContainer');
+
+    plansList.forEach(plan => {
+      const div = document.createElement('div');
+      div.className = 'plan-card';
+      div.innerHTML = `
+        <div class="plan-price">₹${plan.price}</div>
+        <div>Validity: ${plan.validity}</div>
+        <div>${plan.desc}</div>
+        <button class="select-btn" onclick="selectPlan(${plan.price})">Select</button>
+      `;
+      container.appendChild(div);
+    });
+
+    function selectPlan(price) {
+      window.location.href = `payment.html?mobile=${mobile}&amount=${price}`;
+    }
+  </script>
+
+</body>
+</html>
