@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recharge Plans</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .plans-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    .plan-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #007bff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .plan-price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .plan-validity {
+      margin: 8px 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .plan-desc {
+      font-size: 16px;
+    }
+    .select-btn {
+      margin-top: 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Recharge Plans</h1>
+    <div id="mobileInfo"></div>
+  </div>
+
+  <div class="plans-container" id="plansContainer"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const mobileNumber = urlParams.get('mobileNumber');
+    document.getElementById('mobileInfo').innerText = "Mobile: " + (mobileNumber || "Unknown");
+
+    const plans = [
+      { price: 49, validity: "28 दिन", description: "100MB/दिन + कॉल्स" },
+      { price: 99, validity: "56 दिन", description: "1.5GB/दिन + कॉल्स" },
+      { price: 199, validity: "84 दिन", description: "2GB/दिन + कॉल्स + SMS" },
+    ];
+
+    const plansContainer = document.getElementById('plansContainer');
+
+    plans.forEach(plan => {
+      const div = document.createElement('div');
+      div.className = 'plan-card';
+      div.innerHTML = `
+        <div class="plan-price">₹${plan.price}</div>
+        <div class="plan-validity">वैधता: ${plan.validity}</div>
+        <div class="plan-desc">${plan.description}</div>
+        <button class="select-btn">चुनें</button>
+      `;
+      div.querySelector('button').addEventListener('click', () => {
+        window.location.href = \`payment.html?mobile=\${mobileNumber}&amount=\${plan.price}\`;
+      });
+      plansContainer.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>
